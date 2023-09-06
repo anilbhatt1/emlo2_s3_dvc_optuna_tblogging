@@ -12,6 +12,7 @@ defaults:
   - override /model: timm_cifar.yaml
   - override /callbacks: default
   - override /trainer: default
+  - override /logger: tensorboard.yaml
 
 tags: ["cifar10"]
 
