@@ -36,6 +36,7 @@ class CifarLitModule(LightningModule):
 
         # for tracking best so far validation accuracy, create an instance of MaxMetric called self.val_acc_best 
         self.val_acc_best = MaxMetric()
+        self.validation_step_outputs = []
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
@@ -66,12 +67,13 @@ class CifarLitModule(LightningModule):
         # remember to always return loss from `training_step()` or backpropagation will fail!
         return {"loss": loss, "preds": preds, "targets": targets}
 
-    # def training_epoch_end(self, outputs: List[Any]):
-    #     # `outputs` is a list of dicts returned from `training_step()`
-    #     pass
+    def on_training_epoch_end(self):
+        pass
 
     def validation_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
+
+        self.validation_step_outputs.append(loss)
 
         # update and log metrics
         self.val_loss(loss)
