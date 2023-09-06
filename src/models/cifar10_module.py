@@ -90,9 +90,10 @@ class CifarLitModule(LightningModule):
         # Log it as `val_acc_best`, instead of as a metric object
         # otherwise metric would be reset by lightning after each epoch
         self.log("val/acc_best", self.val_acc_best.compute(), prog_bar=True)
-        val_loss = sum(i["loss"] for i in self.validation_step_outputs) / len(self.validation_step_outputs)
+        # val_loss = sum(i["loss"] for i in self.validation_step_outputs) / len(self.validation_step_outputs)
+        val_loss_epoch_average = torch.stack(self.validation_step_outputs).mean()
         # logs the hyperparameters and the "hp_metric"  with the value val_loss
-        self.logger.log_hyperparams(vars(self.hparams), metrics={"hp_metric": val_loss})
+        self.logger.log_hyperparams(vars(self.hparams), metrics={"hp_metric": val_loss_epoch_average})
 
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
