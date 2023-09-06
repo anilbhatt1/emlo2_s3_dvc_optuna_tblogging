@@ -8,6 +8,6 @@ optimizer:
 
 net:
   _target_: timm.create_model
-  model_name: resnet50
+  model_name: resnet50  # This will get overridden from model_name (eg: resnet18) passed from /configs/experiment/cifar_timm.yaml
   pretrained: True
   num_classes: 10
